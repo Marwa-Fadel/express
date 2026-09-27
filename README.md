@@ -1,10 +1,6 @@
 # url-shortener
 
-مختصر روابط بسيط بـ **Express + Prisma 7** (بدون NestJS) — كل الـ routing
-والتحقق من المدخلات ومعالجة الأخطاء مكتوبة يدوياً، لتوضيح الفرق العملي بين
-Express (framework فاضية بدون بنية مفروضة) وNest (framework فيها بنية
-ودependency injection مدمج).
-
+مختصر روابط بسيط بـ **Express + Prisma 7**
 ## الفكرة
 
 - `POST /links` — تاخد رابط طويل، بترجع رابط قصير (كود عشوائي)
