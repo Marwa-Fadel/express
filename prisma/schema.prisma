@@ -1,0 +1,30 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  // مشروعنا CommonJS (require)، مش ESM - لازم moduleFormat = "cjs"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+  // ملاحظة: ممنوع تحطي url هون - Prisma 7 بترفضها. الـ url موجود بـ prisma.config.ts
+}
+
+model Link {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  originalUrl String
+  createdAt   DateTime @default(now())
+  clicks      Click[]
+
+  @@map("links")
+}
+
+model Click {
+  id        Int      @id @default(autoincrement())
+  linkId    Int
+  link      Link     @relation(fields: [linkId], references: [id])
+  clickedAt DateTime @default(now())
+
+  @@map("clicks")
+}

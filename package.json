@@ -1,0 +1,23 @@
+{
+  "name": "url-shortener",
+  "version": "0.0.1",
+  "description": "مختصر روابط بسيط بـ Express + Prisma - تتبّع نقرات لكل رابط",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "tsx src/server.js",
+    "prisma:push": "prisma db push",
+    "prisma:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "nanoid": "^3.3.7",
+    "pg": "^8.13.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.10.0",
+    "tsx": "^4.19.2"
+  }
+}
