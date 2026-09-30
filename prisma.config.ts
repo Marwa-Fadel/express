@@ -1,3 +1,4 @@
+// Prisma 7: ممنوع تحطي url جوا schema.prisma - لازم تكون هون بس
 import 'dotenv/config';
 import { defineConfig, env } from 'prisma/config';
 

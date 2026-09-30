@@ -1,9 +1,6 @@
 # url-shortener
 
-مختصر روابط بسيط بـ **Express + Prisma 7** (بدون NestJS) — كل الـ routing
-والتحقق من المدخلات ومعالجة الأخطاء مكتوبة يدوياً، لتوضيح الفرق العملي بين
-Express (framework فاضية بدون بنية مفروضة) وNest (framework فيها بنية
-ودependency injection مدمج).
+مختصر روابط بسيط بـ **Express + Prisma 7** (بدون NestJS) 
 
 ## الفكرة
 
@@ -43,10 +40,21 @@ curl -X POST http://localhost:3000/links -H "Content-Type: application/json" -d 
 
 ## بنية المشروع
 
+المشروع مقسّم لطبقات واضحة (routes / controllers / service)، بدل ما يكون
+كل شي بملف واحد:
+
 ```
-prisma.config.ts        إعدادات Prisma 7 (فيه رابط الاتصال بقاعدة البيانات)
-prisma/schema.prisma     نموذج البيانات: Link و Click (علاقة one-to-many)
-generated/prisma/        كود Prisma Client المولَّد (ما يُرفع لـ git)
-src/prismaClient.js      اتصال Prisma بقاعدة البيانات عبر driver adapter
-src/server.js            كل الـ routes والمنطق (Express خام، بدون طبقات إضافية)
+prisma.config.ts              إعدادات Prisma 7 (فيه رابط الاتصال بقاعدة البيانات)
+prisma/schema.prisma           نموذج البيانات: Link و Click (علاقة one-to-many)
+generated/prisma/              كود Prisma Client المولَّد (ما يُرفع لـ git)
+src/prismaClient.js            اتصال Prisma بقاعدة البيانات عبر driver adapter
+src/server.js                  تجهيز التطبيق فقط: mount الـ router + معالج الأخطاء المركزي
+src/routes/links.routes.js     ربط كل مسار (path) بدالة الـ controller المسؤولة عنه (express.Router)
+src/controllers/links.controller.js   فهم HTTP، التحقق من المدخلات، تنسيق الرد
+src/services/links.service.js  المنطق الفعلي والوصول لقاعدة البيانات (بدون أي معرفة بـ req/res)
+src/utils/asyncHandler.js      يمسك أخطاء async route handlers (Express 4 ما بتعملها تلقائياً)
 ```
+
+**تدفّق الطلب:** `routes` بتستقبل الطلب وتوجّهه → `controller` بيتحقق من
+شكل المدخلات ويطلب من `service` تنفيذ العملية → `service` بيتعامل مع
+قاعدة البيانات ويرجّع بيانات خام → `controller` بيصيغ الرد النهائي.
